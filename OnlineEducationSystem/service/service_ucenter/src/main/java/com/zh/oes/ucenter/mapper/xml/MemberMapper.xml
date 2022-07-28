@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zh.oes.ucenter.mapper.MemberMapper">
+    <!--统计当日注册人数-->
+    <select id="registerCount" resultType="java.lang.Integer">
+        select count(*)
+        from oes.student_member uc
+        where DATE(uc.create_time) = #{day}
+    </select>
+</mapper>
