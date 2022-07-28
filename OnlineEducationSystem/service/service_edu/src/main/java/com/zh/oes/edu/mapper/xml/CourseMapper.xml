@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zh.oes.edu.mapper.CourseMapper">
+
+    <select id="getPublishCourse" resultType="com.zh.oes.model.vo.edu.admin.CoursePublishVO">
+        select ec.title,
+               ec.cover,
+               ec.lesson_num                    as lessonNum,
+               CONVERT(ec.price, DECIMAL(8, 2)) as price,
+               es1.title                        as subjectName,
+               es2.title                        as typeName,
+               et.name                          as teacherName
+        from edu_course ec
+                 left OUTER JOIN edu_teacher et on ec.teacher_id = et.id
+                 left OUTER JOIN edu_subject es1 on ec.subject_id = es1.id
+                 left OUTER join edu_subject es2 on ec.type_id = es2.id
+        where ec.id = #{courseId}
+    </select>
+
+    <select id="getUserCourseInfo" resultType="com.zh.oes.model.vo.edu.user.CourseUserInfoVO">
+        select ec.id,
+               ec.title,
+               ec.cover,
+               ec.lesson_num                    as lessonNum,
+               CONVERT(ec.price, DECIMAL(8, 2)) AS price,
+               ec.sale_count                    as saleCount,
+               ec.view_count                    as viewCount,
+               ec.description,
+
+               et.id                            as teacherId,
+               et.name                          as teacherName,
+               et.intro,
+               et.avatar,
+
+               es1.id                           as subjectId,
+               es1.title                        as subjectName,
+               es2.id                           as typeId,
+               es2.title                        as typeName
+
+        from edu_course ec
+                 left OUTER JOIN edu_teacher et on ec.teacher_id = et.id
+                 left OUTER JOIN edu_subject es1 on ec.subject_id = es1.id
+                 left OUTER join edu_subject es2 on ec.type_id = es2.id
+        where ec.id = #{courseId}
+    </select>
+</mapper>
