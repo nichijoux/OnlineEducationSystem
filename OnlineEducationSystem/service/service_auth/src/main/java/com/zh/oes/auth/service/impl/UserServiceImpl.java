@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zh.oes.auth.mapper.UserMapper;
+import com.zh.oes.auth.service.UserRoleService;
 import com.zh.oes.auth.service.UserService;
 import com.zh.oes.model.entity.auth.User;
 import com.zh.oes.model.vo.auth.UserQueryCondition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 /**
@@ -20,6 +23,13 @@ import org.springframework.util.StringUtils;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    private UserRoleService userRoleService;
+
+    @Autowired
+    public void setUserRoleService(UserRoleService userRoleService) {
+        this.userRoleService = userRoleService;
+    }
 
     /**
      * 分页查询用户信息
@@ -59,6 +69,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public User getByUsername(String username) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUsername, username);
+        wrapper.eq(User::getIsEnable, true);
         return baseMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 根据角色id启用或者禁用某个用户
+     *
+     * @param userId   用户id
+     * @param isEnable 是否启用用户
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void enableOrDisableUser(Long userId, Boolean isEnable) {
+        // 更新user表
+        User user = new User();
+        user.setIsEnable(isEnable);
+        user.setId(userId);
+        baseMapper.updateById(user);
+        // 更新userRole表
+        userRoleService.enableOrDisableUserRole(userId, isEnable);
     }
 }

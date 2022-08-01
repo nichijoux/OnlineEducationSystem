@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zh.oes.auth.mapper.RoleMapper;
+import com.zh.oes.auth.service.RolePermissionService;
 import com.zh.oes.auth.service.RoleService;
 import com.zh.oes.auth.service.UserRoleService;
 import com.zh.oes.model.entity.auth.Role;
@@ -11,6 +12,7 @@ import com.zh.oes.model.entity.auth.UserRole;
 import com.zh.oes.model.vo.auth.RoleQueryCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -28,9 +30,16 @@ import java.util.stream.Collectors;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
     private UserRoleService userRoleService;
 
+    private RolePermissionService rolePermissionService;
+
     @Autowired
     public void setUserRoleService(UserRoleService userRoleService) {
         this.userRoleService = userRoleService;
+    }
+
+    @Autowired
+    public void setRolePermissionService(RolePermissionService rolePermissionService) {
+        this.rolePermissionService = rolePermissionService;
     }
 
     /**
@@ -137,5 +146,23 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             roleList = baseMapper.selectBatchIds(roleIdList);
         }
         return roleList;
+    }
+
+    /**
+     * 启用或者禁用角色id为roleId的角色
+     *
+     * @param roleId   要更新的角色id
+     * @param isEnable 是否启用或者禁用
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void enableOrDisableRole(Long roleId, Boolean isEnable) {
+        // 更新role表
+        Role role = new Role();
+        role.setId(roleId);
+        role.setIsEnable(isEnable);
+        baseMapper.updateById(role);
+        // 更新rolePermission表
+        rolePermissionService.enableOrDisableRolePermission(roleId, isEnable);
     }
 }

@@ -64,4 +64,12 @@ export default {
             params: { userId, roleIdList }
         })
     },
+    // 根据id启用或者禁用用户
+    enableOrDisableUser(userId, isEnable) {
+        return request({
+            url: `${API_PATH}/enableOrDisableUser/${userId}`,
+            method: 'POST',
+            params: { "isEnable": isEnable }
+        })
+    }
 }

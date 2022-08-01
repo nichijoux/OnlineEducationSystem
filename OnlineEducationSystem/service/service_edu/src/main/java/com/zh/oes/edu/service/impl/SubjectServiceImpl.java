@@ -1,5 +1,7 @@
 package com.zh.oes.edu.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zh.oes.common.base.exception.OESException;
@@ -7,9 +9,13 @@ import com.zh.oes.edu.mapper.SubjectMapper;
 import com.zh.oes.edu.service.SubjectService;
 import com.zh.oes.model.entity.edu.LevelSubject;
 import com.zh.oes.model.entity.edu.Subject;
+import com.zh.oes.model.vo.edu.admin.SubjectDownloadVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +37,9 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
      */
     @Override
     public List<LevelSubject> getAllSubject() {
-        // 获取所有学科,并按sort和id排序
+        // 获取所有学科,并按sort排序
         LambdaQueryWrapper<Subject> wrapper = new LambdaQueryWrapper<>();
-        wrapper.orderByAsc(Subject::getSort, Subject::getId);
+        wrapper.orderByAsc(Subject::getSort);
         List<Subject> allSubject = baseMapper.selectList(wrapper);
         // 过滤获取一级学科
         List<Subject> oneSubjectList = allSubject.stream().filter(item -> item.getPid().equals(0L))
@@ -91,6 +97,51 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         List<Long> idList = getChildIdList(subjectId, allSubject);
         idList.add(subjectId);
         return baseMapper.deleteBatchIds(idList) >= 1;
+    }
+
+    /**
+     * 下载科目为excel文件
+     */
+    @Override
+    public void downloadSubject(HttpServletResponse response) {
+        List<LevelSubject> allSubject = getAllSubject();
+        // 将LevelSubject转换为List<SubjectDownloadVO>对象
+        List<SubjectDownloadVO> downloadVOList = new ArrayList<>();
+        for (LevelSubject levelSubject : allSubject) {
+            convertSubjectDownloadVO(null, levelSubject, downloadVOList);
+        }
+        try {
+            String fileName = URLEncoder.encode("学科列表", "UTF-8").replaceAll("\\+", "%20");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
+            ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream(), SubjectDownloadVO.class).build();
+            excelWriter.write(downloadVOList, EasyExcel.writerSheet("学科列表").build());
+            excelWriter.finish();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 将List<LevelSubject>转化为List<SubjectDownloadVO>
+     *
+     * @param parentSubject  父LevelSubject
+     * @param currentSubject 当前LevelSubject
+     * @param downloadVOList 要转为的SubjectDownloadVO列表
+     */
+    private void convertSubjectDownloadVO(LevelSubject parentSubject, LevelSubject currentSubject, List<SubjectDownloadVO> downloadVOList) {
+        SubjectDownloadVO downloadVO = new SubjectDownloadVO();
+        if (parentSubject != null) {
+            downloadVO.setParentSubject(parentSubject.getTitle());
+        }
+        downloadVO.setSubject(currentSubject.getTitle());
+        downloadVOList.add(downloadVO);
+        List<LevelSubject> children = currentSubject.getChildren();
+        if (children == null) return;
+        for (LevelSubject childSubject : children) {
+            convertSubjectDownloadVO(currentSubject, childSubject, downloadVOList);
+        }
     }
 
     /**

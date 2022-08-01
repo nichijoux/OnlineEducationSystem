@@ -2,6 +2,7 @@ package com.zh.oes.auth.service.impl;
 
 import com.zh.oes.auth.service.PermissionService;
 import com.zh.oes.auth.service.UserService;
+import com.zh.oes.common.base.exception.OESException;
 import com.zh.oes.common.security.entity.SecurityUser;
 import com.zh.oes.model.entity.auth.User;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +38,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 判断用户是否存在
         if (null == user) {
             throw new UsernameNotFoundException("用户名不存在！");
+        } else if (!user.getIsEnable()) {
+            throw new OESException("用户被禁用");
         }
         // 返回UserDetails实现类
         com.zh.oes.common.security.entity.User curUser = new com.zh.oes.common.security.entity.User();

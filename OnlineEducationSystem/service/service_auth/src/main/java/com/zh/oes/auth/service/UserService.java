@@ -19,4 +19,7 @@ public interface UserService extends IService<User> {
 
     // 根据用户名获取用户
     User getByUsername(String username);
+
+    // 根据角色id启用或者禁用某个用户
+    void enableOrDisableUser(Long userId, Boolean isEnable);
 }

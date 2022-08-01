@@ -85,7 +85,9 @@
             inactive-color="#ff4949"
             active-text="启用"
             inactive-text="禁用"
-            @change="enableOrDisableUser(scope.row.id, $event)"
+            @change="
+              enableOrDisableUser(scope.row.id, scope.row.username, $event)
+            "
           ></el-switch>
         </template>
       </el-table-column>
@@ -367,10 +369,15 @@ export default {
           this.$message.info("已取消删除");
         });
     },
-
     // 启用或者禁用用户
-    enableOrDisableUser(userId, isEnable) {
-      //TODO
+    enableOrDisableUser(userId, username, isEnable) {
+      userAPI.enableOrDisableUser(userId, isEnable).then((response) => {
+        if (isEnable) {
+          this.$message.success(`启用用户[${username}]成功`);
+        } else {
+          this.$message.warning(`禁用用户[${username}]成功`);
+        }
+      });
     },
     // 添加用户信息
     addUserInfo(userInfo) {

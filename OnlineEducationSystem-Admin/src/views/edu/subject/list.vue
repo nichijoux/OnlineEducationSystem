@@ -8,12 +8,13 @@
         <el-button type="primary" icon="el-icon-plus" @click="addTopSubject"
           >添加一级科目</el-button
         >
-        <el-button
-          type="warning"
-          icon="el-icon-download"
-          @click="exportAllSubject"
-          >导出所有科目</el-button
-        >
+        <a href="http://localhost:8500/admin/edu/subject/downloadSubject">
+          <el-button
+            type="warning"
+            icon="el-icon-download"
+            >导出所有科目</el-button
+          >
+        </a>
       </div>
       <div class="down-tree">
         <!-- 表格数据开始 -->
@@ -32,9 +33,9 @@
             <i class="child-node-icon" v-else></i>
 
             <span>{{ data.title }}</span>
-            <span v-if="data.children && data.children.length > 0">（{{
-              data.children.length
-            }}）</span>
+            <span v-if="data.children && data.children.length > 0"
+              >（{{ data.children.length }}）</span
+            >
             <span style="position: absolute; right: 0">
               <el-button
                 type="text"
@@ -202,8 +203,6 @@ export default {
       // 设置不区分大小写
       return data.title.indexOf(value) !== -1;
     },
-    // 用 excel 导出所有学科
-    exportAllSubject() {},
   },
 };
 </script>

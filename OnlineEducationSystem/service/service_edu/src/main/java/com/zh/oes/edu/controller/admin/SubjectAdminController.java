@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -84,6 +85,12 @@ public class SubjectAdminController {
             @PathVariable Long subjectId) {
         return subjectService.deleteSubject(subjectId) ?
                 Result.success() : Result.failure().message("递归删除科目分类失败");
+    }
+
+    @ApiOperation(value = "下载科目为excel文件")
+    @GetMapping("downloadSubject")
+    public void downloadSubject(HttpServletResponse response) {
+        subjectService.downloadSubject(response);
     }
 }
 

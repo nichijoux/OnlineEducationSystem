@@ -5,6 +5,7 @@ import com.zh.oes.auth.service.IndexService;
 import com.zh.oes.auth.service.PermissionService;
 import com.zh.oes.auth.service.RoleService;
 import com.zh.oes.auth.service.UserService;
+import com.zh.oes.common.base.exception.OESException;
 import com.zh.oes.model.entity.auth.Role;
 import com.zh.oes.model.entity.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +79,12 @@ public class IndexServiceImpl implements IndexService {
         // admin就没有角色，但是admin可以获取所有权限
         if (roleNameList.size() == 0) {
             //前端框架必须返回一个角色，否则报错，如果没有角色，返回一个空角色
-            roleNameList.add("admin");
+            if (username.equals("admin")) {
+                roleNameList.add("admin");
+            } else {
+                throw new OESException(roleList.size() == 0 ?
+                        "用户不存在角色" : "用户角色全被禁用");
+            }
         }
 
         //根据用户id获取操作权限值

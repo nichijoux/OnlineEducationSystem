@@ -110,7 +110,9 @@
             inactive-color="#ff4949"
             active-text="启用"
             inactive-text="禁用"
-            @change="enableOrDisableMember(scope.row.id, $event)"
+            @change="
+              enableOrDisableMember(scope.row.id, scope.row.nickname, $event)
+            "
           >
           </el-switch>
         </template>
@@ -227,9 +229,13 @@ export default {
       }
     },
     // 禁用或者启用某个用户
-    enableOrDisableMember(userId, value) {
-      memberAPI.enableOrDisableMember(userId, value).then((response) => {
-        this.$message.success(value ? "启用成功" : "禁用成功");
+    enableOrDisableMember(userId, nickname, isEnable) {
+      memberAPI.enableOrDisableMember(userId, isEnable).then((response) => {
+        if (isEnable) {
+          this.$message.success(`启用用户[${nickname}]成功`);
+        } else {
+          this.$message.warning(`禁用用户[${nickname}]成功`);
+        }
       });
     },
     // 每页记录数改变

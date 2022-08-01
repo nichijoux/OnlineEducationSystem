@@ -1,9 +1,10 @@
 package com.zh.oes.edu.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.zh.oes.model.entity.edu.LevelSubject;
 import com.zh.oes.model.entity.edu.Subject;
-import com.baomidou.mybatisplus.extension.service.IService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -26,4 +27,7 @@ public interface SubjectService extends IService<Subject> {
 
     // 根据学科id删除学科分类及其子节点
     boolean deleteSubject(Long subjectId);
+
+    // 下载科目为excel文件
+    void downloadSubject(HttpServletResponse response);
 }

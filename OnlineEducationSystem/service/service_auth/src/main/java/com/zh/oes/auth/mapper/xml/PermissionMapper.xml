@@ -19,6 +19,7 @@
         <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <!-- 根据用户id获取权限列表 -->
     <select id="selectPermissionListByUserId" resultMap="permissionMap">
         select p.id,
                p.pid,
@@ -40,6 +41,8 @@
         where ur.user_id =
               #{userId}
           and p.is_enable = 1
+          and rp.is_enable = 1
+          and ur.is_enable = 1
         order by p.sort
     </select>
 
@@ -50,6 +53,7 @@
         where type = 2
           and is_enable = 1
     </select>
+
     <!-- 根据用户id获取权限值 -->
     <select id="selectPermissionValueByUserId" resultType="java.lang.String">
         select distinct p.permission_value
@@ -59,5 +63,7 @@
         where ur.user_id = #{userId}
           and p.type = 2
           and p.is_enable = 1
+          and ur.is_enable = 1
+          and rp.is_enable = 1
     </select>
 </mapper>

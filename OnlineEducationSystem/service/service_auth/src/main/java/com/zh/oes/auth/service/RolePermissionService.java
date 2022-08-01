@@ -13,4 +13,6 @@ import com.zh.oes.model.entity.auth.RolePermission;
  */
 public interface RolePermissionService extends IService<RolePermission> {
 
+    // 禁用或者启用用户权限
+    void enableOrDisableRolePermission(Long roleId, Boolean isEnable);
 }

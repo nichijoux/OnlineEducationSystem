@@ -13,4 +13,6 @@ import com.zh.oes.model.entity.auth.UserRole;
  */
 public interface UserRoleService extends IService<UserRole> {
 
+    // 启用或者禁用用户id为userId的角色
+    void enableOrDisableUserRole(Long userId, Boolean isEnable);
 }

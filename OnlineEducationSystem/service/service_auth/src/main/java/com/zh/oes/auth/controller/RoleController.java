@@ -90,5 +90,16 @@ public class RoleController {
         return roleService.removeByIds(idList) ?
                 Result.success() : Result.failure().message("批量删除角色失败");
     }
+
+    @ApiOperation(value = "根据id启用或者禁用角色")
+    @PostMapping("enableOrDisableRole/{roleId}")
+    public Result enableOrDisableRole(
+            @ApiParam(name = "roleId", value = "角色id", required = true)
+            @PathVariable Long roleId,
+            @ApiParam(name = "isEnable", value = "是否启用某个角色", required = true)
+            @RequestParam("isEnable") Boolean isEnable) {
+        roleService.enableOrDisableRole(roleId, isEnable);
+        return Result.success();
+    }
 }
 

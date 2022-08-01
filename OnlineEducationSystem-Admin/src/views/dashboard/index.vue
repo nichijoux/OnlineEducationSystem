@@ -9,9 +9,13 @@
 import { mapGetters } from "vuex";
 
 export default {
-  name: "dashboard",
+  name: "nichijoux-dashboard",
   computed: {
     ...mapGetters(["name", "roles"]),
+  },
+  data() {
+    return {
+    };
   },
 };
 </script>
@@ -25,5 +29,15 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+}
+
+.image {
+  width: 100px;
+  height: 100px;
+}
+.m-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

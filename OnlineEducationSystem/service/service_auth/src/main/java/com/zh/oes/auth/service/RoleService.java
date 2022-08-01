@@ -28,4 +28,7 @@ public interface RoleService extends IService<Role> {
 
     // 获取角色列表
     List<Role> getRoleListByUserId(Long userId);
+
+    // 根据角色id启用或者禁用某个角色
+    void enableOrDisableRole(Long roleId, Boolean isEnable);
 }

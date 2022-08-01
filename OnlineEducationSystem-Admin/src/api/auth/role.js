@@ -49,4 +49,12 @@ export default {
             data: roleIdList
         })
     },
+    // 根据id启用或者禁用角色
+    enableOrDisableRole(roleId, isEnable) {
+        return request({
+            url: `${API_PATH}/enableOrDisableRole/${roleId}`,
+            method: 'POST',
+            params: { "isEnable": isEnable }
+        })
+    }
 }

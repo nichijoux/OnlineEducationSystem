@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,6 +87,7 @@ public class UserController {
 
     @ApiOperation(value = "根据id删除管理用户")
     @DeleteMapping("deleteUser/{userId}")
+    @PreAuthorize("hasAuthority('user.delete')")
     public Result deleteUser(
             @ApiParam(name = "userId", value = "要删除的用户id", required = true)
             @PathVariable Long userId) {
@@ -99,6 +101,7 @@ public class UserController {
 
     @ApiOperation(value = "根据id列表批量删除管理用户")
     @DeleteMapping("batchDeleteUser")
+    @PreAuthorize("hasAuthority('user.delete')")
     public Result batchDeleteUser(
             @ApiParam(name = "userIdList", value = "要删除的用户的id列表", required = true)
             @RequestBody List<Long> userIdList) {
@@ -124,6 +127,21 @@ public class UserController {
             @RequestParam("roleIdList") Long[] roleIdList) {
         return roleService.assignRole(userId, roleIdList) ?
                 Result.success() : Result.failure().message("角色分配失败");
+    }
+
+    @ApiOperation(value = "根据id启用或者禁用用户")
+    @PostMapping("enableOrDisableUser/{userId}")
+    @PreAuthorize("hasAuthority('user.enableOrDisable')")
+    public Result enableOrDisableUser(
+            @ApiParam(name = "userId", value = "用户id", required = true)
+            @PathVariable Long userId,
+            @ApiParam(name = "isEnable", value = "是否启用用户", required = true)
+            @RequestParam("isEnable") Boolean isEnable) {
+        if (userId.equals(1L)) {
+            return Result.failure().message("admin用户无法被禁用");
+        }
+        userService.enableOrDisableUser(userId, isEnable);
+        return Result.success();
     }
 }
 

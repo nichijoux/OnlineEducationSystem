@@ -87,7 +87,9 @@
             inactive-color="#ff4949"
             active-text="启用"
             inactive-text="禁用"
-            @change="enableOrDisableRole(scope.row.id, $event)"
+            @change="
+              enableOrDisableRole(scope.row.id, scope.row.roleName, $event)
+            "
           ></el-switch>
         </template>
       </el-table-column>
@@ -456,7 +458,15 @@ export default {
       });
     },
     // 启用或禁用角色
-    enableOrDisableRole(id, value) {},
+    enableOrDisableRole(roleId, roleName, isEnable) {
+      roleAPI.enableOrDisableRole(roleId, isEnable).then((response) => {
+        if (isEnable) {
+          this.$message.success(`启用角色[${roleName}]成功`);
+        } else {
+          this.$message.warning(`禁用角色[${roleName}]成功`);
+        }
+      });
+    },
     // 重置RoleInfo表单
     resetRoleInfo() {
       // 关闭对话框
