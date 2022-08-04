@@ -25,6 +25,6 @@ export default function checkPermission(value) {
 
 // 用来控制按钮的显示
 export function hasButtonPermission(permission) {
-  const myBtns = store.getters.buttons
-  return myBtns.indexOf(permission) > -1
+  const permissionList = store.getters.permissionList
+  return permissionList.indexOf(permission) > -1
 }

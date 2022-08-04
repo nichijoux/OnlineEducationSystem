@@ -114,11 +114,12 @@
             @click="() => openUpdateMenuPermission(scope.row)"
             >修改
           </el-button>
-          <!-- 所有菜单均可删除 -->
+          <!-- 所有菜单均可删除,加入menu.delete控制前端vue的显示 -->
           <el-button
             type="text"
             size="mini"
             @click="deletePermission(scope.row.id)"
+            v-if="hasPermission('menu.delete')"
             >删除
           </el-button>
         </template>
