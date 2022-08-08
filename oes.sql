@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80023
 File Encoding         : 65001
 
-Date: 2022-08-04 21:37:54
+Date: 2022-08-08 11:41:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -444,16 +444,18 @@ CREATE TABLE `edu_course_collect` (
   `id` bigint NOT NULL COMMENT '收藏ID',
   `course_id` bigint NOT NULL COMMENT '课程id',
   `member_id` bigint NOT NULL COMMENT '会员id',
-  `is_deleted` tinyint NOT NULL DEFAULT '0' COMMENT '逻辑删除 1（true）已删除， 0（false）未删除',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `collectId` (`course_id`,`member_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=COMPACT COMMENT='课程收藏';
 
 -- ----------------------------
 -- Records of edu_course_collect
 -- ----------------------------
-INSERT INTO `edu_course_collect` VALUES ('1196269345666019330', '1192252213659774977', '1', '1', '2019-11-18 11:30:12', '2019-11-18 11:30:12');
+INSERT INTO `edu_course_collect` VALUES ('1248893747837421532', '1542078687770427394', '1545034536738373633', '2022-08-08 10:34:09', '2022-08-08 10:34:09');
+INSERT INTO `edu_course_collect` VALUES ('1556485184084287490', '15', '1545034536738373633', '2022-08-08 11:39:21', '2022-08-08 11:39:21');
+INSERT INTO `edu_course_collect` VALUES ('1556485217366089729', '18', '1545034536738373633', '2022-08-08 11:39:29', '2022-08-08 11:39:29');
 
 -- ----------------------------
 -- Table structure for edu_subject
@@ -677,6 +679,7 @@ INSERT INTO `pay_order` VALUES ('1552606675347726337', '20220728184732180', '18'
 INSERT INTO `pay_order` VALUES ('1552606770227077121', '20220728184754359', '18', '1545034536738373633', 'Java语言程序', 'https://nichijoux-oes.oss-cn-chengdu.aliyuncs.com/2022/07/25/670403fc85fSnipaste_2022-07-25_14-43-19.jpg', '陈璞花', '好起来了', '13509432595', '0.01', '1', '0', '0', '2022-07-28 18:47:55', '2022-07-28 18:47:55');
 INSERT INTO `pay_order` VALUES ('1552606830528585730', '20220728184809756', '18', '1545034536738373633', 'Java语言程序', 'https://nichijoux-oes.oss-cn-chengdu.aliyuncs.com/2022/07/25/670403fc85fSnipaste_2022-07-25_14-43-19.jpg', '陈璞花', '好起来了', '13509432595', '0.01', '1', '0', '0', '2022-07-28 18:48:09', '2022-07-28 18:48:09');
 INSERT INTO `pay_order` VALUES ('1552607298902319106', '20220728185000822', '18', '1545034536738373633', 'Java语言程序', 'https://nichijoux-oes.oss-cn-chengdu.aliyuncs.com/2022/07/25/670403fc85fSnipaste_2022-07-25_14-43-19.jpg', '陈璞花', '好起来了', '13509432595', '0.01', '1', '1', '0', '2022-07-28 18:50:01', '2022-07-28 18:54:00');
+INSERT INTO `pay_order` VALUES ('1556485324375347202', '20220808113954795', '1543879917765238785', '1545034536738373633', '人工智能原理', 'https://nichijoux-oes.oss-cn-chengdu.aliyuncs.com/2022/07/25/670403fc85fSnipaste_2022-07-25_14-43-19.jpg', '礼欣', '好起来了', '13509432595', '1.00', '1', '0', '0', '2022-08-08 11:39:54', '2022-08-08 11:39:54');
 
 -- ----------------------------
 -- Table structure for statistics_daily
@@ -1242,4 +1245,4 @@ INSERT INTO `student_member` VALUES ('1191616288114163713', null, '17866603606',
 INSERT INTO `student_member` VALUES ('1195187659054329857', null, '15010546384', '96e79218965eb72c92a549dd5a330112', 'qy', null, null, 'http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83eoj0hHXhgJNOTSOFsS4uZs8x1ConecaVOB8eIl115xmJZcT4oCicvia7wMEufibKtTLqiaJeanU2Lpg3w/132', null, '1', '0', '2019-11-15 11:51:58', '2019-11-15 11:51:58');
 INSERT INTO `student_member` VALUES ('1542307507052015618', 'o3_SC599cgeV8i75dWrlqrkGUA2I', '', null, '卫天', null, null, 'https://thirdwx.qlogo.cn/mmopen/vi_32/rhwWwianRPt65VVJXL1TXZmPaCt6GbKGz6LSdGwbCZWP0pUgEl96BDwEDaSzRIHyw1A7LrfJVrLWZ29pF51bRyg/132', null, '1', '0', '2022-06-30 08:42:19', '2022-06-30 08:42:19');
 INSERT INTO `student_member` VALUES ('1542309609698574338', 'o3_SC5zRydLw97xk_TEBQMRS3NWI', '', null, '哄哄', '2', '10', 'https://thirdwx.qlogo.cn/mmopen/vi_32/Q3auHgzwzM5JBpZdGzrpibAypSwaQPeBgXuGHN3INUxrMJHXc9fypebib8iaibYibjtjf1868OwYAPEgEWpYjXPibbSQ/132', '在学习zhong', '1', '0', '2022-06-30 08:50:40', '2022-07-08 09:08:57');
-INSERT INTO `student_member` VALUES ('1545034536738373633', null, '13509432595', '96e79218965eb72c92a549dd5a330112', '好起来了', '2', '20', 'https://img.51miz.com/Element/00/88/08/84/72f298b9_E880884_d0f63115.png', '我的个性签名', '1', '0', '2022-07-07 21:18:34', '2022-07-26 10:39:29');
+INSERT INTO `student_member` VALUES ('1545034536738373633', null, '13509432595', '96e79218965eb72c92a549dd5a330112', '好起来了', '2', '20', 'https://nichijoux-oes.oss-cn-chengdu.aliyuncs.com/2022/08/08/93efd688cf3Ai.jpg', '我的个性签名', '1', '0', '2022-07-07 21:18:34', '2022-08-08 10:07:15');

@@ -24,12 +24,6 @@
             <router-link to="/teacher" tag="li" active-class="current">
               <a>名师</a>
             </router-link>
-            <!-- <router-link to="/article" tag="li" active-class="current">
-              <a>文章</a>
-            </router-link>
-            <router-link to="/qa" tag="li" active-class="current">
-              <a>问答</a>
-            </router-link> -->
           </ul>
           <!-- / nav -->
           <ul class="h-r-login">
@@ -77,6 +71,12 @@
                         >修改密码</router-link
                       ></el-dropdown-item
                     >
+                    <!-- 收藏课程 -->
+                    <el-dropdown-item>
+                      <router-link :to="{ path: '/ucenter/collect' }"
+                        >收藏课程</router-link
+                      >
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </a>
@@ -239,8 +239,8 @@ export default {
       // var userStr = "{'name' : 'wcd','age':'20'}"
       //采用JSON.parse将字符串转化为json  {'name' : wcd ,'age' : 20}
       var userStr = cookie.get("oes_ucenter");
-      if (typeof(userStr) != "undefined" && userStr != "") {
-        console.log(userStr)
+      if (typeof userStr != "undefined" && userStr != "") {
+        console.log(userStr);
         this.loginInfo = JSON.parse(userStr);
       }
     },

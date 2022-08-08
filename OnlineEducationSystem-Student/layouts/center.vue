@@ -23,12 +23,6 @@
             <router-link to="/teacher" tag="li" active-class="current">
               <a>名师</a>
             </router-link>
-            <!-- <router-link to="/article" tag="li" active-class="current">
-              <a>文章</a>
-            </router-link>
-            <router-link to="/qa" tag="li" active-class="current">
-              <a>问答</a>
-            </router-link> -->
           </ul>
           <!-- / nav -->
           <ul class="h-r-login">
@@ -65,16 +59,24 @@
                     ><i class="el-icon-arrow-down el-icon--right"></i>
                   </span>
                   <el-dropdown-menu slot="dropdown">
+                    <!-- 修改用户信息 -->
                     <el-dropdown-item
                       ><router-link :to="{ path: '/ucenter/basic' }"
                         >基本信息</router-link
                       ></el-dropdown-item
                     >
+                    <!-- 修改密码 -->
                     <el-dropdown-item>
                       <router-link :to="{ path: '/ucenter/password' }"
                         >修改密码</router-link
                       ></el-dropdown-item
                     >
+                    <!-- 收藏课程 -->
+                    <el-dropdown-item>
+                      <router-link :to="{ path: '/ucenter/collect' }"
+                        >收藏课程</router-link
+                      >
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </a>
@@ -114,7 +116,7 @@
     <div id="aCoursesList" class="container">
       <el-container>
         <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-          <el-menu :router="true" default-openeds="[1,2]">
+          <el-menu :router="true" default-openeds="[1,2,3]" class="elMenu">
             <el-submenu index="1">
               <template slot="title"
                 ><i class="el-icon-user-solid"></i>个人信息</template
@@ -125,6 +127,9 @@
                 >
                 <el-menu-item index="1-2" :route="{ path: '/ucenter/password' }"
                   >修改密码</el-menu-item
+                >
+                <el-menu-item index="1-3" :route="{ path: '/ucenter/collect' }"
+                  >收藏课程</el-menu-item
                 >
               </el-menu-item-group>
             </el-submenu>
@@ -260,7 +265,7 @@ export default {
       // var userStr = "{'name' : 'wcd','age':'20'}"
       //采用JSON.parse将字符串转化为json  {'name' : wcd ,'age' : 20}
       var userStr = cookie.get("oes_ucenter");
-      if (typeof(userStr) != "undefined" && userStr != "") {
+      if (typeof userStr != "undefined" && userStr != "") {
         this.loginInfo = JSON.parse(userStr);
       }
     },

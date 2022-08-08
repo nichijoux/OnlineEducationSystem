@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import loginAPI from '@/api/login'
+import loginAPI from "@/api/login";
 import memberAPI from "@/api/ucenter/member";
 import cookie from "js-cookie";
 
@@ -135,7 +135,7 @@ export default {
       }
       if (file.size / 1024 / 1024 > 3) {
         this.$message.error("上传封面图片大小不能超过3MB!");
-        return;
+        return false;
       }
       return true;
     },

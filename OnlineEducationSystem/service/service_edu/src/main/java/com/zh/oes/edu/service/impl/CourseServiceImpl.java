@@ -8,9 +8,11 @@ import com.zh.oes.common.utils.JwtUtil;
 import com.zh.oes.common.base.client.OrderClient;
 import com.zh.oes.edu.mapper.CourseMapper;
 import com.zh.oes.edu.service.ChapterService;
+import com.zh.oes.edu.service.CourseCollectService;
 import com.zh.oes.edu.service.CourseService;
 import com.zh.oes.edu.service.TeacherService;
 import com.zh.oes.model.entity.edu.Course;
+import com.zh.oes.model.entity.edu.CourseCollect;
 import com.zh.oes.model.entity.edu.Teacher;
 import com.zh.oes.model.vo.edu.admin.*;
 import com.zh.oes.model.vo.edu.user.CourseUserInfoVO;
@@ -43,6 +45,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
     private ChapterService chapterService;
 
+    private CourseCollectService collectService;
+
     private OrderClient orderClient;
 
     @Autowired
@@ -53,6 +57,11 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Autowired
     public void setChapterService(ChapterService chapterService) {
         this.chapterService = chapterService;
+    }
+
+    @Autowired
+    public void setCollectService(CourseCollectService collectService) {
+        this.collectService = collectService;
     }
 
     @Autowired
@@ -303,10 +312,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         if (StringUtils.hasText(memberId) && courseId != null) {
             haveBuyCourse = orderClient.remoteGetUserHaveBuyCourse(courseId, Long.valueOf(memberId));
         }
+        // 判断用户是否收藏课程
+        boolean haveCollectCourse = collectService.haveCollectCourse(Long.valueOf(memberId), courseId);
         Map<String, Object> data = new HashMap<>();
         data.put("courseUserInfoVO", courseUserInfoVO);
         data.put("chapterAndVideoList", chapterAndVideoList);
         data.put("haveBuyCourse", haveBuyCourse);
+        data.put("haveCollectCourse", haveCollectCourse);
         return data;
     }
 
@@ -319,5 +331,66 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public CourseUserInfoVO getUserCourseInfoById(Long courseId) {
         return baseMapper.getUserCourseInfo(courseId);
+    }
+
+    /**
+     * 根据用户id分页查询收藏课程
+     *
+     * @param userId 用户id
+     * @param index  当前页
+     * @param limit  每页记录数
+     * @return 用户收藏课程
+     */
+    @Override
+    public Map<String, Object> pageQueryCollectCourse(Long userId, Long index, Long limit) {
+        Page<CourseCollect> courseCollectPage = new Page<>(index, limit);
+        LambdaQueryWrapper<CourseCollect> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(CourseCollect::getMemberId, userId);
+        wrapper.select(CourseCollect::getCourseId);
+        Page<CourseCollect> courseIdList = collectService.page(courseCollectPage, wrapper);
+        // 然后将课程id和课程实体关联
+        List<Course> allCourseList = baseMapper.selectList(null);
+        Map<Long, Course> courseIdMap = allCourseList.stream().collect(Collectors.toMap(Course::getId, course -> course));
+        // 转换为最终课程列表
+        List<Course> finalCourseList = courseIdList.getRecords().stream()
+                .map(course -> courseIdMap.get(course.getCourseId()))
+                .collect(Collectors.toList());
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("total", courseIdList.getTotal());
+        dataMap.put("records", finalCourseList);
+        dataMap.put("pages", courseIdList.getPages());
+        dataMap.put("current", courseIdList.getCurrent());
+        dataMap.put("size", courseIdList.getSize());
+        dataMap.put("hasNext", courseIdList.hasNext());
+        dataMap.put("hasPrevious", courseIdList.hasPrevious());
+        return dataMap;
+    }
+
+    /**
+     * 收藏课程
+     *
+     * @param courseId 课程id
+     * @param memberId 用户id
+     */
+    @Override
+    public void collectCourse(Long courseId, Long memberId) {
+        CourseCollect courseCollect = new CourseCollect();
+        courseCollect.setCourseId(courseId);
+        courseCollect.setMemberId(memberId);
+        collectService.save(courseCollect);
+    }
+
+    /**
+     * 取消收藏课程
+     *
+     * @param courseId 课程id
+     * @param memberId 用户id
+     */
+    @Override
+    public void cancelCollectCourse(Long courseId, Long memberId) {
+        LambdaQueryWrapper<CourseCollect> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(CourseCollect::getCourseId, courseId);
+        wrapper.eq(CourseCollect::getMemberId, memberId);
+        collectService.remove(wrapper);
     }
 }

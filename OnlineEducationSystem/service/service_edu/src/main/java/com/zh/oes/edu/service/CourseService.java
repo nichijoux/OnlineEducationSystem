@@ -60,4 +60,13 @@ public interface CourseService extends IService<Course> {
 
     // 根据课程id获取课程基本信息
     CourseUserInfoVO getUserCourseInfoById(Long courseId);
+
+    // 分页查询收藏课程
+    Map<String, Object> pageQueryCollectCourse(Long userId, Long index, Long limit);
+
+    // 收藏课程
+    void collectCourse(Long courseId, Long memberId);
+
+    // 取消收藏课程
+    void cancelCollectCourse(Long courseId, Long memberId);
 }

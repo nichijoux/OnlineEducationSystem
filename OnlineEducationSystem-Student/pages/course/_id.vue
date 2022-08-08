@@ -42,8 +42,21 @@
             </section>
             <section class="c-attr-mt of">
               <span class="ml10 vam">
-                <em class="icon18 scIcon"></em>
-                <a class="c-fff vam" title="收藏" href="#">收藏</a>
+                <em
+                  class="icon18 scIcon"
+                  style="background: yellow"
+                  v-if="haveCollectCourse"
+                ></em>
+                <em class="icon18 scIcon" v-else></em>
+                <el-button
+                  type="text"
+                  @click="collectCourse"
+                  v-if="!haveCollectCourse"
+                  >收藏</el-button
+                >
+                <el-button type="text" @click="cancelCollectCourse" v-else
+                  >取消收藏</el-button
+                >
               </span>
             </section>
             <section
@@ -410,6 +423,8 @@ export default {
       chapterList: [],
       // 是否购买了课程
       isbuyCourse: false,
+      // 是否收藏了课程
+      haveCollectCourse: false,
     };
   },
   created() {
@@ -425,6 +440,7 @@ export default {
         this.course = response.data.courseUserInfoVO;
         this.chapterList = response.data.chapterAndVideoList;
         this.isbuyCourse = response.data.haveBuyCourse;
+        this.haveCollectCourse = response.data.haveCollectCourse;
       });
     },
 
@@ -463,6 +479,7 @@ export default {
       }
     },
 
+    // 分页查询评论
     gotoPage(page) {
       commentAPI
         .pageQueryComment(this.courseId, page, this.limit)
@@ -480,10 +497,23 @@ export default {
         this.$router.push({ path: "/orders/" + response.data }); //动态路由页面
       });
     },
-
     // 请购买弹窗
     pleaseBuy() {
       this.$message.warning("请购买课程");
+    },
+    // 收藏课程
+    collectCourse() {
+      courseAPI.collectCourse(this.courseId).then((response) => {
+        this.$message.success("收藏课程成功");
+        this.haveCollectCourse = true;
+      });
+    },
+    // 取消收藏课程
+    cancelCollectCourse() {
+      courseAPI.cancelCollectCourse(this.courseId).then((response) => {
+        this.$message.warning("取消收藏课程成功");
+        this.haveCollectCourse = false;
+      });
     },
   },
 };

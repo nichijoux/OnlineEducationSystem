@@ -1,5 +1,6 @@
 package com.zh.oes.edu.controller.user;
 
+import com.zh.oes.common.utils.JwtUtil;
 import com.zh.oes.common.utils.Result;
 import com.zh.oes.edu.service.CourseService;
 import com.zh.oes.model.vo.edu.user.CourseUserInfoVO;
@@ -54,5 +55,43 @@ public class CourseUserController {
             @ApiParam(name = "courseId", value = "课程id", required = true)
             @PathVariable("courseId") Long courseId) {
         return courseService.getUserCourseInfoById(courseId);
+    }
+
+    @ApiOperation(value = "分页查询已收藏课程")
+    @GetMapping("pageQueryCollectCourse/{index}/{limit}")
+    public Result pageQueryCollectCourse(
+            @ApiParam(name = "index", value = "当前页", required = true)
+            @PathVariable Long index,
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Long limit,
+            @ApiParam(name = "request", value = "获取用户id")
+                    HttpServletRequest request) {
+        Long userId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
+        Map<String, Object> data = courseService.pageQueryCollectCourse(userId, index, limit);
+        return Result.success(data);
+    }
+
+    @ApiOperation(value = "收藏课程")
+    @PostMapping("collectCourse/{courseId}")
+    public Result collectCourse(
+            @ApiParam(name = "courseId", value = "课程id", required = true)
+            @PathVariable Long courseId,
+            @ApiParam(name = "request", value = "获取用户id")
+                    HttpServletRequest request) {
+        Long memberId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
+        courseService.collectCourse(courseId, memberId);
+        return Result.success();
+    }
+
+    @ApiOperation(value = "取消收藏课程")
+    @PostMapping("cancelCollectCourse/{courseId}")
+    public Result cancelCollectCourse(
+            @ApiParam(name = "courseId", value = "课程id", required = true)
+            @PathVariable Long courseId,
+            @ApiParam(name = "request", value = "获取用户id")
+                    HttpServletRequest request) {
+        Long memberId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
+        courseService.cancelCollectCourse(courseId, memberId);
+        return Result.success();
     }
 }

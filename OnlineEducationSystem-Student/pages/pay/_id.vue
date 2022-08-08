@@ -20,8 +20,6 @@
         <div class="fl sao">
           <p class="red">请使用微信扫一扫。</p>
           <div class="fl code">
-            <!-- <img id="qrious" src="~/assets/img/erweima.png" alt=""> -->
-            <!-- <qriously value="weixin://wxpay/bizpayurl?pr=R7tnDpZ" :size="338"/> -->
             <qriously :value="payObj.code_url" :size="338" />
             <div class="saosao">
               <p>请使用微信扫一扫</p>
