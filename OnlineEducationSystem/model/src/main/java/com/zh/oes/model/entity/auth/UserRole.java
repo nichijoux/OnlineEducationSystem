@@ -38,6 +38,10 @@ public class UserRole implements Serializable {
     @TableField(value = "user_id")
     private Long userId;
 
+    @ApiModelProperty(value = "是否启用（1：启用，0：禁止）")
+    @TableField(value = "is_enable")
+    private Boolean isEnable;
+
     @ApiModelProperty(value = "创建时间")
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
