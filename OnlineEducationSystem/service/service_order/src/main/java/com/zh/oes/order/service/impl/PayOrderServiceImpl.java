@@ -3,14 +3,14 @@ package com.zh.oes.order.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zh.oes.common.base.client.CourseClient;
+import com.zh.oes.common.base.client.UcenterClient;
 import com.zh.oes.common.base.exception.OESException;
 import com.zh.oes.common.utils.JwtUtil;
 import com.zh.oes.model.entity.order.PayOrder;
 import com.zh.oes.model.vo.edu.user.CourseUserInfoVO;
 import com.zh.oes.model.vo.edu.user.MemberVO;
 import com.zh.oes.model.vo.order.OrderQueryCondition;
-import com.zh.oes.order.client.CourseClient;
-import com.zh.oes.order.client.MemberClient;
 import com.zh.oes.order.mapper.PayOrderMapper;
 import com.zh.oes.order.service.PayOrderService;
 import com.zh.oes.order.utils.OrderNoUtil;
@@ -35,7 +35,7 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 
     private CourseClient courseClient;
 
-    private MemberClient memberClient;
+    private UcenterClient ucenterClient;
 
     @Autowired
     public void setCourseClient(CourseClient courseClient) {
@@ -43,8 +43,8 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
     }
 
     @Autowired
-    public void setUcenterClient(MemberClient memberClient) {
-        this.memberClient = memberClient;
+    public void setUcenterClient(UcenterClient ucenterClient) {
+        this.ucenterClient = ucenterClient;
     }
 
     /**
@@ -60,7 +60,7 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
         CourseUserInfoVO courseInfo = courseClient.remoteGetCourseInfo(courseId);
         // 远程调用获取用户信息
         Long memberId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
-        MemberVO memberVO = memberClient.remoteGetUser(memberId);
+        MemberVO memberVO = ucenterClient.remoteGetUser(memberId);
         // 创建order对象,设置所需数据
         PayOrder order = new PayOrder();
         order.setOrderNo(OrderNoUtil.generateOrderNo());
