@@ -77,6 +77,12 @@
                         >收藏课程</router-link
                       >
                     </el-dropdown-item>
+                    <!-- 学习记录 -->
+                    <el-dropdown-item>
+                      <router-link :to="{ path: '/ucenter/study' }"
+                        >学习记录</router-link
+                      >
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </a>
@@ -91,7 +97,6 @@
             <!-- /未登录显示第1 li；登录后显示第2，3 li -->
           </ul>
           <aside class="h-r-search">
-            <!--            <form action="#" method="post">-->
             <label class="h-r-s-box">
               <input
                 type="text"
@@ -130,6 +135,9 @@
                 >
                 <el-menu-item index="1-3" :route="{ path: '/ucenter/collect' }"
                   >收藏课程</el-menu-item
+                >
+                <el-menu-item index="1-4" :route="{ path: '/ucenter/study' }"
+                  >学习记录</el-menu-item
                 >
               </el-menu-item-group>
             </el-submenu>
@@ -288,5 +296,8 @@ export default {
 }
 .el-icon-arrow-down {
   font-size: 12px;
+}
+.elMenu {
+  background-color: #809db9;
 }
 </style>

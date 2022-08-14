@@ -12,7 +12,6 @@
       src="https://g.alicdn.com/de/prismplayer/2.8.1/aliplayer-min.js"
     />
     <!-- 定义播放器dom -->
-
     <div id="J_prismPlayer" class="prism-player" style="height: 700px" />
   </div>
 </template>

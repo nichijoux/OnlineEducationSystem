@@ -33,7 +33,6 @@ service.interceptors.response.use((response) => {
         return;
     } else {
         if (response.data.code !== 20000) {
-            debugger
             //25000,订单支付中，不做任何提示
             if (response.data.code !== 25000) {
                 Message({

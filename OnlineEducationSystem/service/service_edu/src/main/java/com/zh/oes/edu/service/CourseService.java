@@ -3,7 +3,6 @@ package com.zh.oes.edu.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zh.oes.model.entity.edu.Course;
 import com.zh.oes.model.vo.edu.admin.CourseInfoVO;
-import com.zh.oes.model.vo.edu.admin.CourseListVO;
 import com.zh.oes.model.vo.edu.admin.CoursePublishVO;
 import com.zh.oes.model.vo.edu.admin.CourseQueryCondition;
 import com.zh.oes.model.vo.edu.user.CourseUserInfoVO;
@@ -23,7 +22,7 @@ import java.util.Map;
  */
 public interface CourseService extends IService<Course> {
     // 获取所有课程信息
-    List<CourseListVO> getAllCourse();
+    List<Course> getAllCourse();
 
     // 分页查询获取课程信息
     Map<String, Object> pageQueryCourse(Long index, Long limit, CourseQueryCondition queryCondition);

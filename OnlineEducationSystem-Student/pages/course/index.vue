@@ -55,8 +55,9 @@
         <div class="js-wrap">
           <section class="fr">
             <span class="c-ccc">
-              <i class="c-master f-fM">1</i>/
-              <i class="c-666 f-fM">1</i>
+              <i class="c-master f-fM">{{ data.current }}</i
+              >/
+              <i class="c-666 f-fM">{{ data.pages }}</i>
             </span>
           </section>
           <section class="fl">

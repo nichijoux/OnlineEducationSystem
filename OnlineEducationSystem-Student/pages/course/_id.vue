@@ -5,13 +5,15 @@
     <!-- 课程分类  开始 -->
     <section class="container">
       <section class="path-wrap txtOf hLh30">
-        <a href="#" title class="c-999 fsize14">首页</a>
+        <a href="/" title class="c-999 fsize14">首页</a>
         \
-        <a href="#" title class="c-999 fsize14">课程列表</a>
+        <a href="/course" title class="c-999 fsize14">课程列表</a>
         \
-        <span class="c-333 fsize14">{{ course.subjectLevelOne }}</span>
+        <span class="c-333 fsize14">{{ course.subjectName }}</span>
         \
-        <span class="c-333 fsize14">{{ course.subjectLevelTwo }}</span>
+        <span class="c-333 fsize14">{{ course.typeName }}</span>
+        \
+        <a href="#" title class="c-999 fsize14">{{ course.title }}</a>
       </section>
       <!-- 课程分类  结束 -->
       <div>
@@ -106,7 +108,7 @@
         </aside>
         <div class="clear"></div>
       </div>
-      <!-- /课程封面介绍 -->
+      <!-- 课程封面、大纲介绍 -->
       <div class="mt20 c-infor-box">
         <article class="fl col-7">
           <section class="mr30">
@@ -153,6 +155,12 @@
                                   :href="'/player/' + video.videoSourceId"
                                   title
                                   target="_blank"
+                                  @click="
+                                    addStudyRecord(
+                                      video.title,
+                                      video.videoSourceId
+                                    )
+                                  "
                                 >
                                   <span
                                     class="fr"
@@ -398,6 +406,7 @@
 import courseAPI from "@/api/edu/course";
 import commentAPI from "@/api/edu/comment";
 import orderAPI from "@/api/order/order";
+import studyAPI from "@/api/edu/record";
 
 export default {
   data() {
@@ -514,6 +523,20 @@ export default {
         this.$message.warning("取消收藏课程成功");
         this.haveCollectCourse = false;
       });
+    },
+    // 添加学习记录
+    addStudyRecord(videoName, videoSourceId) {
+      // 调用api
+      studyAPI
+        .addStudyRecord(
+          this.course.teacherName,
+          this.course.title,
+          this.course.cover,
+          videoName,
+          videoSourceId,
+          this.course.id
+        )
+        .then((response) => {});
     },
   },
 };

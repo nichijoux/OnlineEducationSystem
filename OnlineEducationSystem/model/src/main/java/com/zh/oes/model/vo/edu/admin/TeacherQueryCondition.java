@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Data
@@ -14,6 +16,8 @@ public class TeacherQueryCondition implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "头衔,1:高级讲师 2:首席讲师")
+    @Min(value = 1, message = "最低为1")
+    @Max(value = 2, message = "最高为2")
     private Integer level;
 
     @ApiModelProperty(value = "查询开始时间", example = "2022-6-24 12:00:00")

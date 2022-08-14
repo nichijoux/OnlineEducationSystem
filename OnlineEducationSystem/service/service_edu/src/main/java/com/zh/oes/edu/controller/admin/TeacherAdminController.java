@@ -58,7 +58,7 @@ public class TeacherAdminController {
             @ApiParam(name = "limit", value = "每页记录数", required = true)
             @PathVariable Long limit,
             @ApiParam(name = "queryCondition", value = "查询条件")
-            @RequestBody(required = false) TeacherQueryCondition queryCondition) {
+            @Validated @RequestBody(required = false) TeacherQueryCondition queryCondition) {
         Page<Teacher> teacherList = teacherService.pageQueryTeacher(index, limit, queryCondition);
         return Result.success(teacherList);
     }

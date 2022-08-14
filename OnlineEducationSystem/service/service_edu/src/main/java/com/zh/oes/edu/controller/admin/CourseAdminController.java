@@ -3,8 +3,8 @@ package com.zh.oes.edu.controller.admin;
 
 import com.zh.oes.common.utils.Result;
 import com.zh.oes.edu.service.CourseService;
+import com.zh.oes.model.entity.edu.Course;
 import com.zh.oes.model.vo.edu.admin.CourseInfoVO;
-import com.zh.oes.model.vo.edu.admin.CourseListVO;
 import com.zh.oes.model.vo.edu.admin.CoursePublishVO;
 import com.zh.oes.model.vo.edu.admin.CourseQueryCondition;
 import io.swagger.annotations.Api;
@@ -39,7 +39,7 @@ public class CourseAdminController {
     @ApiOperation(value = "获取所有课程")
     @GetMapping("getAllCourse")
     public Result getAllCourse() {
-        List<CourseListVO> coursesList = courseService.getAllCourse();
+        List<Course> coursesList = courseService.getAllCourse();
         return Result.success(coursesList);
     }
 

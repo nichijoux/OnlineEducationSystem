@@ -75,8 +75,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
      * @return CourseListVO
      */
     @Override
-    public List<CourseListVO> getAllCourse() {
-        return null;
+    public List<Course> getAllCourse() {
+        return baseMapper.selectList(null);
     }
 
     /**
@@ -313,7 +313,10 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
             haveBuyCourse = orderClient.remoteGetUserHaveBuyCourse(courseId, Long.valueOf(memberId));
         }
         // 判断用户是否收藏课程
-        boolean haveCollectCourse = collectService.haveCollectCourse(Long.valueOf(memberId), courseId);
+        boolean haveCollectCourse = false;
+        if (StringUtils.hasText(memberId) && courseId != null) {
+            haveCollectCourse = collectService.haveCollectCourse(Long.valueOf(memberId), courseId);
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("courseUserInfoVO", courseUserInfoVO);
         data.put("chapterAndVideoList", chapterAndVideoList);

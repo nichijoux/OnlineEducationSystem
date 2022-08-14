@@ -77,6 +77,12 @@
                         >收藏课程</router-link
                       >
                     </el-dropdown-item>
+                    <!-- 学习记录 -->
+                    <el-dropdown-item>
+                      <router-link :to="{ path: '/ucenter/study' }"
+                        >学习记录</router-link
+                      >
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </a>
@@ -240,7 +246,6 @@ export default {
       //采用JSON.parse将字符串转化为json  {'name' : wcd ,'age' : 20}
       var userStr = cookie.get("oes_ucenter");
       if (typeof userStr != "undefined" && userStr != "") {
-        console.log(userStr);
         this.loginInfo = JSON.parse(userStr);
       }
     },

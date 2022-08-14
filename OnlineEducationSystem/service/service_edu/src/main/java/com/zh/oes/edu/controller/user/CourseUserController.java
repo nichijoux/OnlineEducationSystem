@@ -49,14 +49,6 @@ public class CourseUserController {
         return Result.success(data);
     }
 
-    @ApiOperation(value = "远程调用,根据课程id获取课程基本信息")
-    @GetMapping("remoteGetCourseInfo/{courseId}")
-    public CourseUserInfoVO remoteGetCourseInfo(
-            @ApiParam(name = "courseId", value = "课程id", required = true)
-            @PathVariable("courseId") Long courseId) {
-        return courseService.getUserCourseInfoById(courseId);
-    }
-
     @ApiOperation(value = "分页查询已收藏课程")
     @GetMapping("pageQueryCollectCourse/{index}/{limit}")
     public Result pageQueryCollectCourse(
@@ -66,6 +58,9 @@ public class CourseUserController {
             @PathVariable Long limit,
             @ApiParam(name = "request", value = "获取用户id")
                     HttpServletRequest request) {
+        if (JwtUtil.getUserIdByJwtToken((request)).equals("")) {
+            return Result.failure().message("请登录用户");
+        }
         Long userId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
         Map<String, Object> data = courseService.pageQueryCollectCourse(userId, index, limit);
         return Result.success(data);
@@ -78,6 +73,9 @@ public class CourseUserController {
             @PathVariable Long courseId,
             @ApiParam(name = "request", value = "获取用户id")
                     HttpServletRequest request) {
+        if (JwtUtil.getUserIdByJwtToken((request)).equals("")) {
+            return Result.failure().message("请登录用户");
+        }
         Long memberId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
         courseService.collectCourse(courseId, memberId);
         return Result.success();
@@ -90,8 +88,19 @@ public class CourseUserController {
             @PathVariable Long courseId,
             @ApiParam(name = "request", value = "获取用户id")
                     HttpServletRequest request) {
+        if (JwtUtil.getUserIdByJwtToken((request)).equals("")) {
+            return Result.failure().message("请登录用户");
+        }
         Long memberId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
         courseService.cancelCollectCourse(courseId, memberId);
         return Result.success();
+    }
+
+    @ApiOperation(value = "远程调用,根据课程id获取课程基本信息")
+    @GetMapping("remoteGetCourseInfo/{courseId}")
+    public CourseUserInfoVO remoteGetCourseInfo(
+            @ApiParam(name = "courseId", value = "课程id", required = true)
+            @PathVariable("courseId") Long courseId) {
+        return courseService.getUserCourseInfoById(courseId);
     }
 }
