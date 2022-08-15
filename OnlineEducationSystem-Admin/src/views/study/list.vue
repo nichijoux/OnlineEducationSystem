@@ -68,13 +68,11 @@
       />
       <!-- 用户昵称结束 -->
 
-      <el-table-column prop="courseName" label="课程名" align="center" />
-
-      <!-- 课程封面列开始 -->
+          <!-- 课程封面列开始 -->
       <el-table-column
         prop="courseCover"
         label="课程封面"
-        width="150"
+        width="200"
         align="center"
       >
         <!-- 动态加载url -->
@@ -82,13 +80,17 @@
         <template slot-scope="scope">
           <img
             :src="scope.row.courseCover"
-            width="130"
-            height="100"
+            width="180"
+            height="170"
             class="el-image__inner el-image__preview"
           />
         </template>
       </el-table-column>
       <!-- 课程封面列结束 -->
+
+      <el-table-column prop="courseName" label="课程名" align="center" />
+
+      <el-table-column prop="videoName" label="小节名" align="center" />
 
       <el-table-column prop="teacherName" label="讲师姓名" align="center" />
 
@@ -96,7 +98,6 @@
       <el-table-column
         prop="createTime"
         label="学习时间"
-        width="160"
         align="center"
       />
       <!-- 学习时间列结束 -->
