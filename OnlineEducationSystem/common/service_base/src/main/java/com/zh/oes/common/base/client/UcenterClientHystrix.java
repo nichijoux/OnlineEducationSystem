@@ -14,6 +14,11 @@ public class UcenterClientHystrix implements UcenterClient {
 
     @Override
     public Result remoteRegisterCount(String day) {
-        return Result.failure().message("Ucenter服务器宕机");
+        throw new OESException("Ucenter服务器宕机");
+    }
+
+    @Override
+    public Long remoteCountUser() {
+        return 0L;
     }
 }

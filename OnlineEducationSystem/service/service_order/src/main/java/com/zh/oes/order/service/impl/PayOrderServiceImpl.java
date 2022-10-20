@@ -3,7 +3,7 @@ package com.zh.oes.order.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.zh.oes.common.base.client.CourseClient;
+import com.zh.oes.common.base.client.EduClient;
 import com.zh.oes.common.base.client.UcenterClient;
 import com.zh.oes.common.base.exception.OESException;
 import com.zh.oes.common.utils.JwtUtil;
@@ -33,13 +33,13 @@ import java.util.Objects;
 public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> implements PayOrderService {
 
 
-    private CourseClient courseClient;
+    private EduClient eduClient;
 
     private UcenterClient ucenterClient;
 
     @Autowired
-    public void setCourseClient(CourseClient courseClient) {
-        this.courseClient = courseClient;
+    public void setCourseClient(EduClient eduClient) {
+        this.eduClient = eduClient;
     }
 
     @Autowired
@@ -57,7 +57,7 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
     @Override
     public Long generateOrder(Long courseId, HttpServletRequest request) {
         // 远程调用获取课程信息
-        CourseUserInfoVO courseInfo = courseClient.remoteGetCourseInfo(courseId);
+        CourseUserInfoVO courseInfo = eduClient.remoteGetCourseInfo(courseId);
         // 远程调用获取用户信息
         Long memberId = Long.valueOf(JwtUtil.getUserIdByJwtToken(request));
         MemberVO memberVO = ucenterClient.remoteGetUser(memberId);

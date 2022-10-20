@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.zh.oes.common.base.client")
 public class StatisticsApplication {
     public static void main(String[] args) {
         SpringApplication.run(StatisticsApplication.class, args);

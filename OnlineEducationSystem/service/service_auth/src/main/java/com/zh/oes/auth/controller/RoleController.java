@@ -3,6 +3,7 @@ package com.zh.oes.auth.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zh.oes.auth.service.RoleService;
+import com.zh.oes.common.base.exception.OESException;
 import com.zh.oes.common.utils.Result;
 import com.zh.oes.model.entity.auth.Role;
 import com.zh.oes.model.vo.auth.RoleQueryCondition;
@@ -60,6 +61,9 @@ public class RoleController {
     public Result addRole(
             @ApiParam(name = "role", value = "要增加的角色信息", required = true)
             @Validated @RequestBody Role role) {
+        if (role.getRoleName().equals("admin")) {
+            throw new OESException("添加角色名不能为admin");
+        }
         return roleService.save(role) ?
                 Result.success() : Result.failure().message("新增角色失败");
     }

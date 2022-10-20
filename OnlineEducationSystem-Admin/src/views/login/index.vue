@@ -55,6 +55,7 @@
           :r="10"
           :w="310"
           :h="155"
+          :imgs="verifyImages"
           @success="onSuccess"
           @fail="onFailure"
           @refresh="onRefresh"
@@ -80,7 +81,12 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
+import img0 from "@/assets/images/verify/img0.jpg";
+import img1 from "@/assets/images/verify/img1.jpg";
+import img2 from "@/assets/images/verify/img2.jpg";
+import img3 from "@/assets/images/verify/img3.jpg";
+import img4 from "@/assets/images/verify/img4.jpg";
+import img5 from "@/assets/images/verify/img5.jpg";
 
 export default {
   name: "Login",
@@ -108,6 +114,8 @@ export default {
       verifyMessage: "",
       // 滑动验证框内部文字提示
       verifyText: "向右滑动滑块",
+      // 滑动验证码的图片
+      verifyImages: [img0, img1, img2, img3, img4, img5],
       // 消息框
       messageBox: {},
     };

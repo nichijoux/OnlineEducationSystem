@@ -44,4 +44,10 @@ public class CommentAdminController {
         return commentService.removeById(commentId) ?
                 Result.success() : Result.failure().message("删除评论失败");
     }
+
+    @ApiOperation(value = "远程调用,统计评论数")
+    @GetMapping("remoteCountComment")
+    public Long remoteCountComment() {
+        return commentService.count();
+    }
 }

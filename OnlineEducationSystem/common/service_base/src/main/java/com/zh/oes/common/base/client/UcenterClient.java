@@ -22,4 +22,7 @@ public interface UcenterClient {
     Result remoteRegisterCount(
             @ApiParam(name = "day", value = "要统计的那一天", required = true)
             @PathVariable("day") String day);
+
+    @GetMapping("admin/ucenter/member/remoteCountUser")
+    Long remoteCountUser();
 }

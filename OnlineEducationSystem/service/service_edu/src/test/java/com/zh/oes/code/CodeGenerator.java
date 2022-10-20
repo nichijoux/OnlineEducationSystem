@@ -35,7 +35,10 @@ public class CodeGenerator {
 
     //指定数据库表的前缀。指定后，在生成文件时，模板会自动截取掉前缀字符，如表名为sys_user，指定前缀为sys_,生成实体是自动识别生成为user
     //多个前缀可以用逗号隔开，例如 sys_,bs_，根据项目需要配置
-    private static final String TABLE_PREFIX = "edu_";
+    private static final String TABLE_PREFIX = "student_";
+
+    // 学习记录
+    private static final String[] TABLE_LIST = {"student_study_record"};
 
     // 生成代码入口
     @Test
@@ -104,7 +107,7 @@ public class CodeGenerator {
                         .enableSkipView()
                         .disableSqlFilter()
                         //表名匹配，按指定的表名生成对应的文件
-                        .addInclude("edu_chapter","edu_video")
+                        .addInclude(TABLE_LIST)
                         //指定数据库表的前缀。指定后，在生成文件时，模板会自动截取掉前缀字符，如表名为sys_user，指定前缀为sys_,生成实体是自动识别生成为user
                         .addTablePrefix(TABLE_PREFIX);
             } catch (Exception e) {

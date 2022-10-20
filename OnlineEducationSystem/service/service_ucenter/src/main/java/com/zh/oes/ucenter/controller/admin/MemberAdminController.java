@@ -59,4 +59,10 @@ public class MemberAdminController {
         int registerCount = memberService.registerCount(day);
         return Result.success(registerCount);
     }
+
+    @ApiOperation(value = "远程调用,获取总的注册人数")
+    @GetMapping("remoteCountUser")
+    public Long remoteCountUser() {
+        return memberService.count();
+    }
 }

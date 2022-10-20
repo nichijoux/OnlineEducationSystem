@@ -110,5 +110,11 @@ public class CourseAdminController {
         return courseService.deleteCourse(courseId) ?
                 Result.success() : Result.failure().message("删除课程失败");
     }
+
+    @ApiOperation(value = "远程调用,统计课程数量")
+    @GetMapping("remoteCountCourse")
+    public Long remoteCountCourse() {
+        return courseService.count();
+    }
 }
 

@@ -12,5 +12,11 @@ module.exports = {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: false
+  sidebarLogo: true,
+
+  /**
+   * @type {boolean} true | false
+   * @description 是否开启标签栏缓存
+   */
+  tagsView: true,
 }

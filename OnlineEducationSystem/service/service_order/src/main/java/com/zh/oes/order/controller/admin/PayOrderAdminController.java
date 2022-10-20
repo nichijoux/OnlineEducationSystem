@@ -31,9 +31,15 @@ public class PayOrderAdminController {
             @PathVariable Long index,
             @ApiParam(name = "limit", value = "每页记录数", required = true)
             @PathVariable Long limit,
-            @ApiParam(name = "queryCondition", value = "查询条件",required = true)
+            @ApiParam(name = "queryCondition", value = "查询条件", required = true)
             @Validated @RequestBody OrderQueryCondition queryCondition) {
         Page<PayOrder> orderList = orderService.pageQueryOrder(index, limit, queryCondition);
         return Result.success(orderList);
+    }
+
+    @ApiOperation(value = "远程调用,统计订单信息")
+    @GetMapping("remoteCountOrder")
+    public Long remoteCountOrder() {
+        return orderService.count();
     }
 }

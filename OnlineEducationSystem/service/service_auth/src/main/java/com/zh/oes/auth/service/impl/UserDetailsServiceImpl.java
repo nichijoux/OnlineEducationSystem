@@ -1,6 +1,7 @@
 package com.zh.oes.auth.service.impl;
 
 import com.zh.oes.auth.service.PermissionService;
+import com.zh.oes.auth.service.RoleService;
 import com.zh.oes.auth.service.UserService;
 import com.zh.oes.common.base.exception.OESException;
 import com.zh.oes.common.security.entity.SecurityUser;
@@ -18,11 +19,18 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
     private UserService userService;
 
+    private RoleService roleService;
+
     private PermissionService permissionService;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     @Autowired
@@ -44,7 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 返回UserDetails实现类
         com.zh.oes.common.security.entity.User curUser = new com.zh.oes.common.security.entity.User();
         BeanUtils.copyProperties(user, curUser);
-        // 获取用户的权限列表
+        // 获取用户的权限列表(仅权限值,如果权限要加入hasRole的控制,得将角色加入且角色需要加入ROLE_前缀)
         List<String> authorities = permissionService.getPermissionValueByUserId(user.getId());
         SecurityUser securityUser = new SecurityUser(curUser);
         securityUser.setPermissionValueList(authorities);

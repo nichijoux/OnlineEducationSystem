@@ -15,4 +15,7 @@ public interface OrderClient {
             @PathVariable("courseId") Long courseId,
             @ApiParam(name = "memberId", value = "用户id", required = true)
             @PathVariable("memberId") Long memberId);
+
+    @GetMapping("admin/order/payOrder/remoteCountOrder")
+    Long remoteCountOrder();
 }
