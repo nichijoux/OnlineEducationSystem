@@ -34,6 +34,8 @@ public class UserController {
     private UserService userService;
 
     private RoleService roleService;
+    
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -43,6 +45,11 @@ public class UserController {
     @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
+    }
+    
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("pageQueryUser/{index}/{limit}")
@@ -72,6 +79,7 @@ public class UserController {
             @ApiParam(name = "user", value = "要添加的用户信息", required = true)
             @Validated @RequestBody User user) {
         user.setPassword(MD5Util.getMD5(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userService.save(user) ?
                 Result.success() : Result.failure().message("添加管理用户失败");
     }
